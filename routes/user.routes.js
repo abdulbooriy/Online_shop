@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { findAll, findOne, login, otpsend, register, remove, update, verifyOtp } from "../controllers/user.controller.js";
-import { sendOTP } from "../config/eskiz.js";
 
 let userRote = Router();
 

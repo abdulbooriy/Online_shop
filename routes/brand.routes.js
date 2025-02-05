@@ -7,7 +7,7 @@ const brandRoute = Router();
 brandRoute.get('/brands', findAll);
 brandRoute.post('/brands', upload.single('image'), create);
 brandRoute.get('/brand/:id', findOne);
-brandRoute.patch('/brand/:id', update);
+brandRoute.patch('/brand/:id', upload.single('image'), update);
 brandRoute.delete('/brand/:id', remove);
 
 export default brandRoute;

@@ -57,6 +57,7 @@ async function findOne(req, res) {
 
 async function update(req, res) {
     try {
+        let { id } = req.params;
         let { filename } = req.file;
         let { name_uz, name_ru } = req.body;
         const { error } = brandValidation({name_uz, name_ru, image: filename});
@@ -79,8 +80,7 @@ async function update(req, res) {
         if(updated.affectedRows == 0) {
             return res.status(404).send({message: 'Brand id not found ❗'});
         }
-        let [result] = await database.query('select * from brands where id = ?', [updated.insertId]);
-        res.status(200).send({message: 'Brand updated', data: result});
+        res.status(200).send({message: 'Brand updated'});
     } catch (error) {
         res.status(500).send({error_message: error.message});
     }

@@ -28,7 +28,6 @@ CREATE TABLE orderItem (
     total INT NOT NULL
 )
 
-
 CREATE TABLE category (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name_ru VARCHAR(250) NOT NULL,

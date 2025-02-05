@@ -5,8 +5,13 @@ let userRote = Router();
 
 /**
  * @swagger
+ * tags:
+ *   - name: Users
+ *     description: User management endpoints
  * /api/users/register:
  *   post:
+ *     tags:
+ *       - Users
  *     summary: "Foydalanuvchini ro‘yxatdan o‘tkazish"
  *     description: "Foydalanuvchi fullname, phone, password va role orqali ro‘yxatdan o‘tadi"
  *     requestBody:
@@ -38,6 +43,8 @@ userRote.post("/register", register);
  * @swagger
  * /api/users/login:
  *   post:
+ *     tags:
+ *       - Users
  *     summary: "Foydalanuvchini tizimga kirish"
  *     description: "Telefon raqam va parol orqali tizimga kirish"
  *     requestBody:
@@ -65,6 +72,8 @@ userRote.post("/login", login);
  * @swagger
  * /api/users/send-otp:
  *   post:
+ *     tags:
+ *       - Users
  *     summary: "Foydalanuvchiga OTP jo‘natish"
  *     description: "Telefon raqam orqali OTP kod jo‘natish"
  *     requestBody:
@@ -88,6 +97,8 @@ userRote.post("/send-otp", otpsend);
  * @swagger
  * /api/users/verify/{phone}/{token}:
  *   post:
+ *     tags:
+ *       - Users
  *     summary: "Foydalanuvchi OTP tekshirish"
  *     description: "Telefon raqam va OTP orqali tasdiqlash"
  *     parameters:
@@ -115,6 +126,8 @@ userRote.post("/verify/:phone/:token", verifyOtp);
  * @swagger
  * /api/users:
  *   get:
+ *     tags:
+ *       - Users
  *     summary: "Barcha foydalanuvchilarni olish"
  *     description: "Foydalanuvchilar ro‘yxatini qaytaradi"
  *     responses:
@@ -127,6 +140,8 @@ userRote.get("/users", findAll);
  * @swagger
  * /api/users/{id}:
  *   get:
+ *    tags:
+ *      - Users
  *     summary: "Bitta foydalanuvchini olish"
  *     description: "ID bo‘yicha foydalanuvchini olish"
  *     parameters:
@@ -148,6 +163,8 @@ userRote.get("/users/:id", findOne);
  * @swagger
  * /api/users/{id}:
  *   delete:
+ *     tags:
+ *       - Users
  *     summary: "Foydalanuvchini o‘chirish"
  *     description: "ID bo‘yicha foydalanuvchini o‘chirish"
  *     parameters:
@@ -169,6 +186,8 @@ userRote.delete("/users/:id", remove);
  * @swagger
  * /api/users/{id}:
  *   patch:
+ *     tags:
+ *       - Users
  *     summary: "Foydalanuvchi ma’lumotlarini yangilash"
  *     description: "ID bo‘yicha foydalanuvchi ma’lumotlarini yangilash"
  *     parameters:

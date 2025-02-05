@@ -1,7 +1,7 @@
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
-const swaggerDefinition = {
+const swaggerDefinition = {  
     openapi: "3.0.0",
     info: {
         title: "Foydalanuvchi autentifikatsiyasi API",
@@ -24,5 +24,5 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 export default function swaggerDocs(app) {
-    app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpec));    
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));    
 }

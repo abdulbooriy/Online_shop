@@ -1,6 +1,7 @@
-import db from "../config/db.js";
+import db from "../config/database.js";
 import bcrypt from "bcrypt"
-import { userValid, userPatchValid } from "../config/joi.js";
+import userValid from "../validations/user.validation.js";
+import userPatchValid from "../validations/user.update.validation.js";
 import { totp } from "otplib";
 import { sendOTP } from "../config/eskiz.js";
 

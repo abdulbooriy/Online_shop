@@ -8,13 +8,4 @@ let userValid = joi.object({
 
 });
 
-
-let userPatchValid = joi.object({
-    fullname:joi.string(),
-    phone:joi.string(),
-    password:joi.string(),
-    role:joi.string()
-
-});
-
-export { userValid, userPatchValid}
+export default userValid; 

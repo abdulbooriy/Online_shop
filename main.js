@@ -1,6 +1,5 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import userRote from './routes/user.routes.js';
 import swaggerDocs from './config/swagger.js';
 import mainRoute from './routes/index.js';
 
@@ -10,8 +9,6 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
 app.use('/api', mainRoute);
-
-app.use('/api',userRote);
 swaggerDocs(app)
 
 app.listen(PORT, () => {

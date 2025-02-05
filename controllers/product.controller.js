@@ -113,5 +113,4 @@ async function remove(req,res) {
 
 }
 
-cc
 export {findAll, findOne, create, update, remove};

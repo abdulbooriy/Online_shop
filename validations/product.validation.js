@@ -18,8 +18,4 @@ function productValidation(data){
     return products.validate(data,{abortEarly:true});
 }
 
-export default productValidation;
-
-
-
-
+export default productValidation; 

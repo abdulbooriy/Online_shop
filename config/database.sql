@@ -2,6 +2,7 @@ CREATE DATABASE IF NOT EXISTS Online_shop
 
 USE Online_shop
 
+
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     fullname VARCHAR(250) NOT NULL,

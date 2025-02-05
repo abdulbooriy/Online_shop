@@ -7,7 +7,7 @@ const categoryRoute = Router();
 categoryRoute.get('/categories', findAll);
 categoryRoute.post('/categories', upload.single('image'), create);
 categoryRoute.get('/category/:id', findOne);
-categoryRoute.patch('/category/:id', update);
+categoryRoute.patch('/category/:id', upload.single('image'), update);
 categoryRoute.delete('/category/:id', remove);
 
 export default categoryRoute;

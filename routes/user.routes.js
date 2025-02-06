@@ -6,13 +6,12 @@ let userRote = Router();
 /**
  * @swagger
  * tags:
- *   - name: Users
- *     description: User management endpoints
- * /api/users/register:
+ *   name: Users
+ *   description: The users managing 
+ * /users/register:
  *   post:
- *     tags:
- *       - Users
  *     summary: "Foydalanuvchini ro‘yxatdan o‘tkazish"
+ *     tags: [Users]
  *     description: "Foydalanuvchi fullname, phone, password va role orqali ro‘yxatdan o‘tadi"
  *     requestBody:
  *       required: true
@@ -41,11 +40,10 @@ userRote.post("/register", register);
 
 /**
  * @swagger
- * /api/users/login:
+ * /users/login:
  *   post:
- *     tags:
- *       - Users
  *     summary: "Foydalanuvchini tizimga kirish"
+ *     tags: [Users]
  *     description: "Telefon raqam va parol orqali tizimga kirish"
  *     requestBody:
  *       required: true
@@ -70,11 +68,10 @@ userRote.post("/login", login);
 
 /**
  * @swagger
- * /api/users/send-otp:
+ * /users/send-otp:
  *   post:
- *     tags:
- *       - Users
  *     summary: "Foydalanuvchiga OTP jo‘natish"
+ *     tags: [Users]
  *     description: "Telefon raqam orqali OTP kod jo‘natish"
  *     requestBody:
  *       required: true
@@ -95,11 +92,10 @@ userRote.post("/send-otp", otpsend);
 
 /**
  * @swagger
- * /api/users/verify/{phone}/{token}:
+ * /users/verify/{phone}/{token}:
  *   post:
- *     tags:
- *       - Users
  *     summary: "Foydalanuvchi OTP tekshirish"
+ *     tags: [Users]
  *     description: "Telefon raqam va OTP orqali tasdiqlash"
  *     parameters:
  *       - in: path
@@ -124,11 +120,10 @@ userRote.post("/verify/:phone/:token", verifyOtp);
 
 /**
  * @swagger
- * /api/users:
+ * /users:
  *   get:
- *     tags:
- *       - Users
  *     summary: "Barcha foydalanuvchilarni olish"
+ *     tags: [Users]
  *     description: "Foydalanuvchilar ro‘yxatini qaytaradi"
  *     responses:
  *       200:
@@ -138,11 +133,10 @@ userRote.get("/users", findAll);
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /users/{id}:
  *   get:
- *    tags:
- *      - Users
  *     summary: "Bitta foydalanuvchini olish"
+ *     tags: [Users]
  *     description: "ID bo‘yicha foydalanuvchini olish"
  *     parameters:
  *       - in: path
@@ -161,11 +155,10 @@ userRote.get("/users/:id", findOne);
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /users/{id}:
  *   delete:
- *     tags:
- *       - Users
  *     summary: "Foydalanuvchini o‘chirish"
+ *     tags: [Users]
  *     description: "ID bo‘yicha foydalanuvchini o‘chirish"
  *     parameters:
  *       - in: path
@@ -184,11 +177,10 @@ userRote.delete("/users/:id", remove);
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /users/{id}:
  *   patch:
- *     tags:
- *       - Users
  *     summary: "Foydalanuvchi ma’lumotlarini yangilash"
+ *     tags: [Users]
  *     description: "ID bo‘yicha foydalanuvchi ma’lumotlarini yangilash"
  *     parameters:
  *       - in: path

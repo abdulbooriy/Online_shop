@@ -1,5 +1,5 @@
 import { Router } from "express";
-import productRouter from "./product.routes.js";
+import productRoute from "./product.routes.js";
 import categoryRoute from "./category.routes.js";
 import orderRouter from "./order.routes.js";
 import orderItemRouter from "./orderItem.routes.js";
@@ -10,7 +10,7 @@ import countryRoute from "./country.routes.js";
 
 const mainRoute = Router();
 
-mainRoute.use("/", productRouter);
+mainRoute.use("/", productRoute);
 mainRoute.use("/", categoryRoute);
 mainRoute.use("/", categoryItemRoute);
 mainRoute.use("/", brandRoute);

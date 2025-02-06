@@ -1,5 +1,7 @@
 import { Router } from "express";
-import { findAll, findOne, create, update, remove } from "../controllers/product.controller.js";
+import { findAll, findOne, create, update, remove,searchByNameRus,
+    searchByNameUzb, searchByCountryUzb, searchByCountryRus,
+    searchByBrandRus, searchByBrandUzb } from "../controllers/product.controller.js";
 import upload from "../config/multer.js";
 
 let productRoute = Router();
@@ -66,7 +68,7 @@ productRoute.get('/products', findAll);
  *       400:
  *         description: Not found
  */
-productRoute.post('/products', upload.single('image'), create);
+productRoute.post('/product', upload.single('image'), create);
 
 /**
  * @swagger
@@ -135,7 +137,7 @@ productRoute.get("/product/:id", findOne);
  *       404:
  *         description: Not found product ID
  */
-productRoute.patch("/product/:id", update);
+productRoute.patch("/product/:id", upload.single('image'), update);
 
 /**
  * @swagger
@@ -155,5 +157,17 @@ productRoute.patch("/product/:id", update);
  *         description: Not found product ID
  */
 productRoute.delete("/product/:id", remove);
+
+productRoute.get("/productByNameRus", searchByNameRus);
+
+productRoute.get("/productByNameUzb", searchByNameUzb);
+
+productRoute.get("/productByCountryUzb", searchByCountryUzb);
+
+productRoute.get("/productByCountryRus", searchByCountryRus);
+
+productRoute.get("/productByBrandRus", searchByBrandRus);
+
+productRoute.get("/productByBrandUzb", searchByBrandUzb);
 
 export default productRoute;

@@ -2,7 +2,6 @@ CREATE DATABASE IF NOT EXISTS Online_shop
 
 USE Online_shop
 
-
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     fullname VARCHAR(250) NOT NULL,
@@ -62,7 +61,8 @@ CREATE TABLE product (
     description_uz VARCHAR(250) NOT NULL,
     description_ru VARCHAR(250) NOT NULL,
     washable BOOLEAN,
-    size VARCHAR(250) NOT NULL
+    size VARCHAR(250) NOT NULL,
+    image VARCHAR(255)
 )
 
 CREATE TABLE categoryItem (

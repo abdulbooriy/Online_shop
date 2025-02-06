@@ -16,10 +16,10 @@ async function create(req, res) {
         let { filename } = req.file;
         let { name_uz, name_ru } = req.body;
         const  { error, _ } = brandValidation({name_uz, name_ru, image: filename});
-        if(error) {
-            fs.unlink(req.file.path, (error) => {
-                if(error) {
-                    console.log(error.message);
+        if(error && req.file) {
+            fs.unlink(req.file.path, (e) => {
+                if(e) {
+                    console.log(e.message);
                 } else {
                     console.log('image deleted');
                 }
@@ -31,13 +31,15 @@ async function create(req, res) {
         let [findBrand] = await database.query('select * from brands where id = ?', [created.insertId]);
         res.status(200).send({message: 'Brands created', data: findBrand});
     } catch (error) {
-        fs.unlink(req.file.path, (error) => {
-            if(error) {
-                console.log(error.message);
-            } else {
-                console.log('image deleted');
-            }
-        }) 
+        if(req.file) {
+            fs.unlink(req.file.path, (e) => {
+                if(e) {
+                    console.log(e.message);
+                } else {
+                    console.log('image deleted');
+                }
+            }) 
+        }
         res.status(500).send({error_message: error.message});
     }
 }

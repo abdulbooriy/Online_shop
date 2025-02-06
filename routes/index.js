@@ -14,9 +14,9 @@ mainRoute.use("/", productRoute);
 mainRoute.use("/", categoryRoute);
 mainRoute.use("/", categoryItemRoute);
 mainRoute.use("/", brandRoute);
-mainRoute.use("/", userRoute);
 mainRoute.use("/", orderRouter);
 mainRoute.use("/", orderItemRouter);
 mainRoute.use("/", countryRoute);
+mainRoute.use("/", userRoute);
 
 export default mainRoute;

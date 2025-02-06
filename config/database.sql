@@ -13,9 +13,10 @@ CREATE TABLE users (
 CREATE TABLE orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
-    FOREIGN KEY (user_id) REFERENCES users (id),
-    totalPrice INT NOT NULL
+    FOREIGN KEY (user_id) REFERENCES users (id)
+
 )
+
 
 CREATE TABLE orderItem (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -62,7 +63,9 @@ CREATE TABLE product (
     description_ru VARCHAR(250) NOT NULL,
     washable BOOLEAN,
     size VARCHAR(250) NOT NULL,
-    image VARCHAR(255)
+    image VARCHAR(250) NOT NULL,
+    discount INT not null
+
 )
 
 CREATE TABLE categoryItem (

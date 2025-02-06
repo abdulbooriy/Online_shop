@@ -33,12 +33,12 @@ async function create(req,res) {
         if(error){
             return res.status(403).send({message:error.details[0].message});
         }
-        let {user_id,totalPrice} = value;
+        let {user_id} = value;
         let [u] = await database.query("select * from users where id = ?", [user_id]);
         if(u.length==0){
             return res.status(403).send({message:"Siz kiritgan user_id tableda mavjud emas❗"});
         }
-        let a = await database.query("insert into orders (user_id, totalPrice) values (?,?)", [user_id, totalPrice]);
+        let a = await database.query("insert into orders (user_id) values (?)", [user_id]);
         let newID = a[0].insertId;
         let [newData] = await db.query("select * from orders where id = ?", [newID]);
         res.send({"Order created successfully":newData});
@@ -53,7 +53,7 @@ async function update(req,res) {
         if(error){
             return res.status(403).send({message:error.details[0].message});
         }
-        let {user_id, totalPrice} = value;
+        let {user_id} = value;
         let [u] = await database.query("select * from users where id = ?", [user_id]);
         if(u.length==0){
             return res.status(403).send({message:"Siz kiritgan user_id tableda mavjud emas"});
@@ -63,7 +63,7 @@ async function update(req,res) {
         if(oldData.length==0){
             return res.status(403).send({message:"user_id not found❗"});
         }
-        let [data] = await database.query("update orders set user_id = ?, totalPrice = ?  where id = ?", [user_id, totalPrice, id]);
+        let [data] = await database.query("update orders set user_id = ?  where id = ?", [user_id, id]);
         let check = data.affectedRows;
         if(check>0){
             let [updatedData] = await database.query("select * from orders where id = ? ", [id]);

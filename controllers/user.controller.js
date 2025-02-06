@@ -6,93 +6,74 @@ import { totp } from "otplib";
 import { sendOTP } from "../config/eskiz.js";
 
 
-async function otpsend(req, res) {
-    try {
-        let { phone } = req.body;
-        let otp = totp.generate("sekret" + phone);
-
-        await sendOTP(phone, otp);
-
-        res.status(200).send({ message:  `OTP yuborildi ${otp}` });
-    } catch (error) {
-        res.status(500).send({ message: error.message });
-    }
-}
-
-
-async function verifyOtp(req, res) {
-    try {
-        let { phone, token } = req.params;
-        let isValid = totp.check(token, "sekret" + phone);
-
-        if (!isValid) {
-            res.status(401).json({ message: "Not verified" });
-            return;
-        }
-
-        res.status(200).json({ message: "Verified" });
-    } catch (error) {
-        res.status(500).send({ message: error.message });
-    }
-}
 async function register(req, res) {
     try {
         let { error } = userValid.validate(req.body);
         if (error) {
-            res.status(422).send({ message: error.details[0].message });
-            return
+            return res.status(422).send({ message: error.details[0].message });
         }
 
         let { fullname, phone, role, password } = req.body;
-        let [user] = await db.query("select * from users where phone = ?", [phone])
+        let [user] = await db.query("SELECT * FROM users WHERE phone = ?", [phone]);
 
         if (user.length) {
-            res.status(409).send({ message: "you have an account" });
-            return
+            return res.status(409).send({ message: "Siz allaqachon ro'yxatdan o'tgansiz" });
         }
-
 
         let hashed = bcrypt.hashSync(password, 5);
         let [data] = await db.query(
-            "insert into users (fullname, phone, password, role) values (?,?,?,?)",
-            [fullname, phone, hashed, role]);
+            "INSERT INTO users (fullname, phone, password, role) VALUES (?, ?, ?, ?)",
+            [fullname, phone, hashed, role]
+        );
 
-        let [newUser] = await db.query("select * from users where id = ?", [
-            data.insertId,
-        ]);
+        let [newUser] = await db.query("SELECT * FROM users WHERE id = ?", [data.insertId]);
 
         res.status(201).send({ data: newUser[0] });
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
 }
-
-
-
-
-
-async function login(req, res) {
+async function sendOtpLogin(req, res) {
     try {
-        let { phone, password } = req.body;
-        let [user] = await db.query("select * from users where phone = ?", [
-            phone,
-        ]);
+        let { phone } = req.body;
+        let [user] = await db.query("SELECT * FROM users WHERE phone = ?", [phone]);
 
         if (!user.length) {
-            res.status(401).send({ message: "Not authorized" });
-            return;
+            return res.status(401).send({ message: "Foydalanuvchi topilmadi" });
         }
 
-        let correct = bcrypt.compareSync(password, user[0].password);
-        if (!correct) {
-            res.status(400).send({ message: "Wrong password" });
-            return
-        }
+        let otp = totp.generate(`sekret  ${phone}`);
+        await sendOTP(phone, otp);
 
-        res.send({message: "You have successfully"})
-
+        res.status(200).send({ message: "OTP yuborildi", otp });
     } catch (error) {
-        res.send({ message: error.message })
+        res.status(500).send({ message: error.message });
+    }
+}
+
+async function verifyLoginOtp(req, res) {
+    try {
+        let { phone, otp, password } = req.body;
+        let [user] = await db.query("SELECT * FROM users WHERE phone = ?", [phone]);
+
+        if (!user.length) {
+            return res.status(401).send({ message: "Noto'g'ri raqam" });
+        }
+
+
+        let correctPassword = bcrypt.compareSync(password, user[0].password);
+        if (!correctPassword) {
+            return res.status(400).send({ message: "Noto'g'ri parol" });
+        }
+
+        let isValidOtp = totp.check(otp, `sekret  ${phone}`);
+        if (!isValidOtp) {
+            return res.status(400).send({ message: "Noto'g'ri OTP" });
+        }
+
+        res.status(200).send({ message: "Tizimga muvaffaqiyatli kirdingiz", data: user[0] });
+    } catch (error) {
+        res.status(500).send({ message: error.message });
     }
 }
 
@@ -100,16 +81,43 @@ async function login(req, res) {
 
 async function findAll(req, res) {
     try {
-        let [users] = await db.query("select * from users");
+
+        
+        let { fullname, page = 1, limit = 10 } = req.query;
+        page = parseInt(page);
+        limit = parseInt(limit);
+        let offset = (page - 1) * limit;
+
+        if (fullname) {
+            let [users] = await db.query("SELECT * FROM users WHERE lower(fullname) = ? LIMIT ? OFFSET ?",
+                [fullname, limit, offset]);
+
+            if (!users.length) {
+                return res.status(200).send({ message: "Not found" });
+            }
+
+            return res.status(200).send({ data: users, page, limit });
+        }
+
+        let [users] = await db.query("SELECT * FROM users LIMIT ? OFFSET ?", [limit, offset]);
         if (!users.length) {
             return res.status(200).send({ message: "Empty users" });
         }
 
-        res.status(200).send({ data: users });
+        let [[{ total }]] = await db.query("SELECT COUNT(*) AS total FROM users");
+
+        res.status(200).send({
+                data: users,
+                page,
+                limit,
+                total,      
+                totalPages: Math.ceil(total / limit)
+        });
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
 }
+
 
 async function findOne(req, res) {
     try {
@@ -175,4 +183,4 @@ async function remove(req, res) {
 
 
 
-export { register, login, otpsend, verifyOtp, findAll, findOne, update, remove }
+export { register, sendOtpLogin, verifyLoginOtp, findAll, findOne, update, remove }

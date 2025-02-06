@@ -8,4 +8,4 @@ let userValid = joi.object({
 
 });
 
-export default userValid; 
+export default userValid;   

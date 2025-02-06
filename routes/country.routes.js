@@ -11,6 +11,13 @@ countryRoute.delete('/country/:id', remove);
 
 /**
  * @swagger
+ * tags:
+ *   - name: Countries
+ *     description: Manage countries API
+ */
+
+/**
+ * @swagger
  * /countries:
  *   get:
  *     summary: Get all country

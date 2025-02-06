@@ -13,7 +13,7 @@ orderItemRouter.delete("/orderItem/:id", remove);
  * @swagger
  * tags:
  *   name: OrderItem
- *   description: The orderItem managing
+ *   description: The orderItem managing API
  *
  * /orderItem:
  *   get:

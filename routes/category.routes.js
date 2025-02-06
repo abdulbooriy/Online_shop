@@ -12,6 +12,13 @@ categoryRoute.delete('/category/:id', remove);
 
 /**
  * @swagger
+ * tags:
+ *   - name: Categories
+ *     description: Manage categories API
+ */
+
+/**
+ * @swagger
  * /categories:
  *   get:
  *     summary: Get all categories

@@ -6,6 +6,13 @@ const brandRoute = Router();
 
 /**
  * @swagger
+ * tags:
+ *   - name: Brands
+ *     description: Manage brand API
+ */
+
+/**
+ * @swagger
  * /brands:
  *   get:
  *     summary: "FindAll brands"

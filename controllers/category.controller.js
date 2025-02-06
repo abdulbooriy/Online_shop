@@ -1,6 +1,8 @@
 import database from '../config/database.js';
 import categoryValidation from '../validations/category.validation.js';
-import fs from 'fs';
+import { fileURLToPath } from "url";
+import path from "path";
+import fs from "fs";
 
 async function findAll(req, res) {
     try {
@@ -15,28 +17,30 @@ async function create(req, res) {
     try {
         const { filename } = req.file;
         const { name_ru, name_uz} = req.body;
-        const { error, _ } = categoryValidation(req.body);
-        if(error) {
-            fs.unlink(req.file.path, (error) => {
-                if(error) {
-                    console.log(error.message);
+        const { error, _ } = categoryValidation({name_ru, name_uz, image: filename});
+        if(req.file && error) {
+            fs.unlink(req.file.path, (e) => {
+                if(e) {
+                    console.log(e.message);
                 } else {
                     console.log('image deleted');
                 }
             })
-            return res.status(403).send({message: error.details[0].message});
+            res.status(403).send({message: error.details[0].message});
+            return;
         }
-        await database.query('insert into category (name_ru, name_uz, image) values (?, ?, ?)', [name_ru, name_uz, filename]);
-        res.status(200).send({message: 'Category created'});
+        let [categories] = await database.query('insert into category (name_ru, name_uz, image) values (?, ?, ?)', [name_ru, name_uz, filename]);
+        let [result] = await database.query('select * from category where id = ?', [categories.insertId]);
+        res.status(200).send({message: 'Category created', data: result});
     } catch (error) {
-        if(error) {
-            fs.unlink(req.file.path, (error) => {
-                if(error) {
-                    console.log(error.message);
+        if(req.file) {
+            fs.unlink(req.file.path, (e) => {
+                if(e) {
+                    console.log(e.message);
                 } else {
                     console.log('image deleted');
                 }
-            })
+            });
         }
         res.status(500).send({error_message: error.message});
     }
@@ -57,12 +61,14 @@ async function findOne(req, res) {
 
 async function update(req, res) {
     try {
+        let { filename } = req.file;
         let { id } = req.params;
-        const { error, _ } = categoryValidation(req.body);
-        if(error){
-            fs.unlink(req.file.path, (error) => {
-                if(error) {
-                    console.log(error.message);
+        let { name_ru, name_uz } = req.body;
+        const { error } = categoryValidation({name_ru, name_uz, image: filename});
+        if(req.file && error){
+            fs.unlink(req.file.path, (e) => {
+                if(e) {
+                    console.log(e.message);
                 } else {
                     console.log('image deleted');
                 }
@@ -80,24 +86,46 @@ async function update(req, res) {
         }
         res.status(200).send({message: 'Category updated'});
     } catch (error) {
-        fs.unlink(req.file.path, (error) => {
-            if(error) {
-                console.log(error.message);
-            } else {
-                console.log('image deleted');
-            }
-        }) 
+        if(req.file) {
+            fs.unlink(req.file.path, (e) => {
+                if(e) {
+                    console.log(e.message);
+                } else {
+                    console.log('image deleted');
+                }
+            }) 
+        }
         res.status(500).send({error_message: error.message});
     }
 }
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 async function remove(req, res) {
     try {
         let { id } = req.params;
+
+        let [findCategory] = await database.query('select image from category where id = ?', [id]);
+        
+        if(findCategory.affectedRows == 0) {
+            return res.status(404).send({message: 'Category id not found ❗'});
+        }
+
+        let imagePath = path.join(__dirname, '../uploads', findCategory[0].image);
+
         let [result] = await database.query('delete from category where id = ?', [id]);
+
         if(result.affectedRows == 0) {
             return res.status(404).send({message: 'Category id not found ❗'});   
         }
+        fs.unlink(imagePath, (e) => {
+            if(e) {
+                console.log(e.message);
+            } else {
+                console.log('image deleted');
+            }
+        })
         res.status(200).send({message: 'Category deleted'});
     } catch (error) {
         res.status(500).send({error_message: error.message});

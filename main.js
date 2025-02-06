@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 4000;
 const app = express();
 app.use(express.json());
 app.use('/api', mainRoute);
+app.use('/image', express.static('./uploads'));
 swaggerDocs(app);
 
 app.listen(PORT, () => {

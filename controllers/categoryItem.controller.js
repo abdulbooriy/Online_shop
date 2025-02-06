@@ -17,8 +17,9 @@ async function create(req, res) {
         if(error) {
             return res.status(400).send({message: error.details[0].message});
         }
-        let [result] = await database.query('insert into categoryItem (category_id, product_id) values (?, ?)', [category_id, product_id]);
-        res.status(200).send({message: 'CategoryItem created'});
+        let [createCategoryItem] = await database.query('insert into categoryItem (category_id, product_id) values (?, ?)', [category_id, product_id]);
+        let [result] = await database.query('select * from categoryItem where id = ?', [createCategoryItem.insertId]);
+        res.status(200).send({message: 'CategoryItem created', data: result});
     } catch (error) {
         res.status(500).send({error_message: error.message})
     }

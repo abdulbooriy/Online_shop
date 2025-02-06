@@ -54,19 +54,7 @@ async function create(req, res) {
     if (error) {
       return res.status(403).send({ message: error.details[0].message });
     }
-    let {
-      name_ru,
-      name_uz,
-      brand_id,
-      country_id,
-      price,
-      oldPrice,
-      available,
-      description_uz,
-      description_ru,
-      washable,
-      size,
-    } = value;
+    let { name_ru, name_uz, brand_id, country_id, price, oldPrice, available, description_uz, description_ru, washable, size } = value;
     let [c] = await database.query("select * from country where id = ?", [
       country_id,
     ]);

@@ -3,12 +3,16 @@ import { findAll, findOne, login, otpsend, register, remove, update, verifyOtp }
 
 let userRote = Router();
 
-/**
+/** 
  * @swagger
  * tags:
- *   name: Users
- *   description: The users managing 
- * /users/register:
+ *   - name: Users
+ *     description: Foydalanuvchilarni boshqarish API
+ */
+
+/**
+ * @swagger
+ * /api/users/register:
  *   post:
  *     summary: "Foydalanuvchini ro‘yxatdan o‘tkazish"
  *     tags: [Users]

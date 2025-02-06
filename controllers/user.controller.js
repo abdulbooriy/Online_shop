@@ -42,8 +42,8 @@ async function sendOtpLogin(req, res) {
             return res.status(401).send({ message: "Foydalanuvchi topilmadi" });
         }
 
-        let otp = totp.generate( `sekret  ${phone}`);
-        await sendOTP(phone, otp); 
+        let otp = totp.generate(`sekret  ${phone}`);
+        await sendOTP(phone, otp);
 
         res.status(200).send({ message: "OTP yuborildi", otp });
     } catch (error) {
@@ -58,9 +58,9 @@ async function verifyLoginOtp(req, res) {
 
         if (!user.length) {
             return res.status(401).send({ message: "Noto'g'ri raqam" });
-        }   
+        }
 
-        
+
         let correctPassword = bcrypt.compareSync(password, user[0].password);
         if (!correctPassword) {
             return res.status(400).send({ message: "Noto'g'ri parol" });
@@ -70,7 +70,7 @@ async function verifyLoginOtp(req, res) {
         if (!isValidOtp) {
             return res.status(400).send({ message: "Noto'g'ri OTP" });
         }
-        
+
         res.status(200).send({ message: "Tizimga muvaffaqiyatli kirdingiz", data: user[0] });
     } catch (error) {
         res.status(500).send({ message: error.message });
@@ -81,13 +81,15 @@ async function verifyLoginOtp(req, res) {
 
 async function findAll(req, res) {
     try {
+
+        
         let { fullname, page = 1, limit = 10 } = req.query;
         page = parseInt(page);
         limit = parseInt(limit);
         let offset = (page - 1) * limit;
 
         if (fullname) {
-            let [users] = await db.query("SELECT * FROM users WHERE lower(fullname) = ? LIMIT ? OFFSET ?", 
+            let [users] = await db.query("SELECT * FROM users WHERE lower(fullname) = ? LIMIT ? OFFSET ?",
                 [fullname, limit, offset]);
 
             if (!users.length) {
@@ -105,11 +107,11 @@ async function findAll(req, res) {
         let [[{ total }]] = await db.query("SELECT COUNT(*) AS total FROM users");
 
         res.status(200).send({
-            data: users,
-            page,
-            limit,
-            total,
-            totalPages: Math.ceil(total / limit)
+                data: users,
+                page,
+                limit,
+                total,      
+                totalPages: Math.ceil(total / limit)
         });
     } catch (error) {
         res.status(500).send({ message: error.message });

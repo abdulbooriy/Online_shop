@@ -2,8 +2,7 @@ import { Router } from "express";
 import {findAll,findOne,register,remove,sendOtpLogin,update, verifyLoginOtp} from "../controllers/user.controller.js";
 
 let userRoute = Router();
-
-/** 
+/**
  * @swagger
  * tags:
  *   name: Users
@@ -33,7 +32,7 @@ let userRoute = Router();
  *               role:
  *                 type: string
  *     responses:
- *       200:
+ *       201:
  *         description: "Foydalanuvchi muvaffaqiyatli ro‘yxatdan o‘tdi"
  *       400:
  *         description: "Telefon raqam yoki parol noto‘g‘ri"
@@ -58,15 +57,13 @@ userRoute.post("/register", register);
  *             properties:
  *               phone:
  *                 type: string
- *               password:
- *                 type: string
  *     responses:
  *       200:
  *         description: "OTP yuborildi"
  *       400:
- *         description: "Telefon raqam yoki parol noto‘g‘ri"
+ *         description: "Telefon raqam noto‘g‘ri"
  *       401:
- *         description: "Not authorized"
+ *         description: "Foydalanuvchi topilmadi"
  */
 userRoute.post("/send-otp", sendOtpLogin);
 
@@ -88,11 +85,13 @@ userRoute.post("/send-otp", sendOtpLogin);
  *                 type: string
  *               otp:
  *                 type: string
+ *               password:
+ *                 type: string
  *     responses:
  *       200:
  *         description: "OTP tasdiqlandi"
  *       400:
- *         description: "Noto‘g‘ri OTP"
+ *         description: "Noto‘g‘ri OTP yoki parol"
  *       401:
  *         description: "Foydalanuvchi topilmadi"
  */
@@ -105,9 +104,32 @@ userRoute.post("/verify-otp", verifyLoginOtp);
  *     summary: "Barcha foydalanuvchilarni olish"
  *     tags: [Users]
  *     description: "Foydalanuvchilar ro‘yxatini qaytaradi"
+ *     parameters:
+ *       - in: query
+ *         name: fullname
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: "Foydalanuvchi ismiga asoslangan qidiruv"
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: "Sahifa raqami"
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: "Foydalanuvchilar soni"
  *     responses:
  *       200:
  *         description: "Foydalanuvchilar ro‘yxati"
+ *       404:
+ *         description: "Foydalanuvchilar topilmadi"
  */
 userRoute.get("/users", findAll);
 
@@ -132,28 +154,6 @@ userRoute.get("/users", findAll);
  *         description: "Foydalanuvchi topilmadi"
  */
 userRoute.get("/users/:id", findOne);
-
-/**
- * @swagger
- * /users/{id}:
- *   delete:
- *     summary: "Foydalanuvchini o‘chirish"
- *     tags: [Users]
- *     description: "ID bo‘yicha foydalanuvchini o‘chirish"
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: "Foydalanuvchi ID raqami"
- *     responses:
- *       200:
- *         description: "Foydalanuvchi o‘chirildi"
- *       404:
- *         description: "Foydalanuvchi topilmadi"
- */
-userRoute.delete("/users/:id", remove);
 
 /**
  * @swagger
@@ -183,9 +183,33 @@ userRoute.delete("/users/:id", remove);
  *     responses:
  *       200:
  *         description: "Foydalanuvchi ma’lumotlari yangilandi"
+ *       400:
+ *         description: "Foydalanuvchi ID noto‘g‘ri"
  *       404:
  *         description: "Foydalanuvchi topilmadi"
  */
 userRoute.patch("/users/:id", update);
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: "Foydalanuvchini o‘chirish"
+ *     tags: [Users]
+ *     description: "ID bo‘yicha foydalanuvchini o‘chirish"
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: "Foydalanuvchi ID raqami"
+ *     responses:
+ *       200:
+ *         description: "Foydalanuvchi o‘chirildi"
+ *       404:
+ *         description: "Foydalanuvchi topilmadi"
+ */
+userRoute.delete("/users/:id", remove);
 
 export default userRoute;

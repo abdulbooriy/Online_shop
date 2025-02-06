@@ -32,12 +32,12 @@ async function sendOTP(phone, otp) {
         }
 
         const smsResponse = await api.post(
-            "/message/sms/send",
+            // "/message/sms/send",
             {
                 mobile_phone: phone,
-               //     message: ` Bu Eskiz dan test`,
+                   message: ` Bu Eskiz dan test`,
                 from: "4546",
-                "expire_time": 300
+                expire_time : 300
             },
             {
                 headers: { Authorization: `Bearer ${token}` },
@@ -46,7 +46,7 @@ async function sendOTP(phone, otp) {
 
         console.log(`Eskiz OTP jo'natildi: ${smsResponse.data.message}`);
     } catch (error) {
-      //   console.error("Eskiz SMS yuborishda xatolik:", error.response?.data || error.message);
+        console.error("Eskiz SMS yuborishda xatolik:", error.response?.data || error.message);
     }
 }
 

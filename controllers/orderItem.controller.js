@@ -194,7 +194,7 @@ async function findByExpensivePrice(req, res) {
         `);
 
         if (data.length == 0) {
-            return res.status(404).send({ message: "orderItem jadvali bo‘sh 😞" });
+            return res.status(404).send({ message: "orderItem jadvali bo'sh 😞" });
         }
 
         res.status(200).send({ data });

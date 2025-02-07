@@ -122,4 +122,14 @@ async function remove(req, res) {
     }
 }
 
-export { findAll, create, findOne, update, remove };
+async function getByBrandName(req, res){
+    try {
+        let { name_uz } = req.query;
+        let [brands] = await database.query(`SELECT * FROM brands ORDER BY name_uz ${name_uz}`);
+        res.status(200).send({data: brands});
+    } catch (error) {
+        res.status(500).send({error_message: error.message});
+    }
+}
+
+export { findAll, create, findOne, update, remove, getByBrandName };

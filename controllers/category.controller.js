@@ -132,4 +132,39 @@ async function remove(req, res) {
     }
 }
 
-export { findAll, create, findOne, update, remove };
+async function categoryWithPagination(req, res) {
+    try {
+        let { page, limit } = req.query;
+        page = parseInt(page, 10) || 1;
+        limit = parseInt(limit, 10) || 10;
+
+        let offset = (page - 1) * limit;
+
+        let [categories] = await database.query(`SELECT * FROM category LIMIT ${limit} OFFSET ${offset}`);
+        res.status(200).send({data: categories});
+    } catch (error) {
+        res.status(500).send({error_message: error.message});
+    }
+}
+
+async function getBycategoryName_ru (req, res) {
+    try {
+        let {name_ru} = req.query;
+        let [categories] = await database.query(`SELECT * FROM category ORDER BY name_ru ${name_ru}`);
+        res.status(200).send({data: categories});
+    } catch (error) {
+        res.status(500).send({error_message: error.message});
+    }
+}
+
+async function getBycategoryName_uz (req, res) {
+    try {
+        let {name_uz} = req.query;
+        let [categories] = await database.query(`SELECT * FROM category ORDER BY name_uz ${name_uz}`);
+        res.status(200).send({data: categories});
+    } catch (error) {
+        res.status(500).send({error_message: error.message});
+    }
+}
+
+export { findAll, create, findOne, update, remove, categoryWithPagination, getBycategoryName_ru, getBycategoryName_uz };

@@ -69,4 +69,49 @@ async function remove(req, res) {
     }
 }
 
-export { findAll, create, findOne, update, remove };
+async function getByCountryName_uz(req, res) {
+    try { 
+        let { name_uz } = req.query;
+        let [findCountries] = await database.query(`select * from country order by name_uz ${name_uz}`);
+        res.status(200).send({data: findCountries});
+    } catch (error) {
+        res.status(500).send({error_message: error.message});
+    }
+}
+
+async function getByCountryName_ru(req, res) {
+    try {
+        let { name_ru } = req.query;
+        let [findCountries] = await database.query(`select * from country order by name_ru ${name_ru}`);
+        res.status(200).send({data: findCountries});
+    } catch (error) {
+        res.status(500).send({error_message: error.message});
+    }
+}
+
+async function countriesWithLimit (req, res) {
+    try {
+        let { limit } = req.query;
+        let [countries] = await database.query(`select * from country limit ${limit}`);
+        res.status(200).send({data: countries});
+    } catch (error) {
+        res.status(500).send({error_message: error.message});
+    }
+}
+
+async function countriesWithPagination (req, res) {
+    try {
+        let { page, limit } = req.query;
+
+        page = parseInt(page, 10) || 1;
+        limit = parseInt(limit, 10) || 10;
+        let offset = (page - 1) * limit;
+
+        let [country] = await database.query(`SELECT * FROM country LIMIT ${limit} OFFSET ${offset}`);
+        res.status(200).send({data: country});
+    } catch (error) {
+        res.status(500).send({error_message: error.message});
+    }
+}
+
+export { findAll, create, findOne, update, remove, getByCountryName_uz, getByCountryName_ru, countriesWithLimit, countriesWithPagination };

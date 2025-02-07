@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { create, findAll, findOne, remove, update } from "../controllers/category.controller.js";
+import { categoryWithPagination, create, findAll, findOne, getBycategoryName_ru, getBycategoryName_uz, remove, update } from "../controllers/category.controller.js";
 import upload from '../config/multer.js';
 
 const categoryRoute = Router();
@@ -9,6 +9,9 @@ categoryRoute.post('/categories', upload.single('image'), create);
 categoryRoute.get('/category/:id', findOne);
 categoryRoute.patch('/category/:id', upload.single('image'), update);
 categoryRoute.delete('/category/:id', remove);
+categoryRoute.get('/categoriesWithPagination', categoryWithPagination);
+categoryRoute.get('/categoryName_ru', getBycategoryName_ru);
+categoryRoute.get('/categoryName_uz', getBycategoryName_uz);
 
 /**
  * @swagger

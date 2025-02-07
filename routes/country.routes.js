@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { create, findAll, findOne, remove, update } from "../controllers/country.controller.js";
+import { create, findAll, findOne, remove, update, getByCountryName_uz, getByCountryName_ru, countriesWithLimit, countriesWithPagination } from "../controllers/country.controller.js";
 
 const countryRoute = Router();
 
@@ -8,6 +8,10 @@ countryRoute.post('/country', create);
 countryRoute.get('/country/:id', findOne);
 countryRoute.patch('/country/:id', update);
 countryRoute.delete('/country/:id', remove);
+countryRoute.get('/getByCountryName_uz', getByCountryName_uz);
+countryRoute.get('/getByCountryName_ru', getByCountryName_ru);
+countryRoute.get('/countriesWithLimit', countriesWithLimit);
+countryRoute.get('/countriesWithPagination', countriesWithPagination);
 
 /**
  * @swagger

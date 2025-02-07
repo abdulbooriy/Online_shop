@@ -17,7 +17,6 @@ CREATE TABLE orders (
 
 )
 
-
 CREATE TABLE orderItem (
     id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT,
@@ -65,7 +64,6 @@ CREATE TABLE product (
     size VARCHAR(250) NOT NULL,
     image VARCHAR(250) NOT NULL,
     discount INT not null
-
 )
 
 CREATE TABLE categoryItem (

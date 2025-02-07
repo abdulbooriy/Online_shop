@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { create, findAll, findOne, remove, update } from "../controllers/brand.controller.js";
+import { create, findAll, findOne, getByBrandName, remove, update } from "../controllers/brand.controller.js";
 import upload from '../config/multer.js';
 
 const brandRoute = Router();
@@ -136,5 +136,6 @@ brandRoute.patch('/brand/:id', upload.single('image'), update);
  *         description: "Not found brand"
  */
 brandRoute.delete('/brand/:id', remove);
+brandRoute.get('/brandsWithName_uz', getByBrandName);
 
 export default brandRoute;

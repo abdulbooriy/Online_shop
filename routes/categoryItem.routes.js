@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { create, findAll, findOne, remove, update } from "../controllers/categoryItem.controller.js";
+import { categoryItemWithPagination, create, findAll, findOne, remove, update } from "../controllers/categoryItem.controller.js";
 
 const categoryItemRoute = Router();
 
@@ -112,5 +112,6 @@ categoryItemRoute.patch('/categoryItem/:id', update);
  *         description: Kategoriya elementi topilmadi
  */
 categoryItemRoute.delete('/categoryItem/:id', remove);
+categoryItemRoute.get('/categoryItemPagination', categoryItemWithPagination);
 
 export default categoryItemRoute;

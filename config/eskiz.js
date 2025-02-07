@@ -32,10 +32,10 @@ async function sendOTP(phone, otp) {
         }
 
         const smsResponse = await api.post(
-            // "/message/sms/send",
+            "/message/sms/send",
             {
                 mobile_phone: phone,
-                   message: ` Bu Eskiz dan test`,
+                message: ` Bu Eskiz dan test`,
                 from: "4546",
                 expire_time : 300
             },

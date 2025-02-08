@@ -113,7 +113,7 @@ orderRoute.post('/', create);
  *       500:
  *         description: Server error
  */
-orderRoute.put('/:id', update);
+orderRoute.patch('/:id', update);
 
 /**
  * @swagger

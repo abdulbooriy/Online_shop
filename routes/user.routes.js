@@ -170,7 +170,7 @@ userRoute.post('/verify-otp', verifyLoginOtp);
  *       500:
  *         description: Server error
  */
-userRoute.put('/:id', update);
+userRoute.patch('/:id', update);
 
 /**
  * @swagger

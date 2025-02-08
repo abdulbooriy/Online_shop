@@ -4,14 +4,14 @@ import upload from '../config/multer.js';
 
 const categoryRoute = Router();
 
-categoryRoute.get('/categories', findAll);
-categoryRoute.post('/categories', upload.single('image'), create);
-categoryRoute.get('/category/:id', findOne);
-categoryRoute.patch('/category/:id', upload.single('image'), update);
-categoryRoute.delete('/category/:id', remove);
-categoryRoute.get('/categoriesWithPagination', categoryWithPagination);
-categoryRoute.get('/categoryName_ru', getBycategoryName_ru);
-categoryRoute.get('/categoryName_uz', getBycategoryName_uz);
+categoryRoute.get('/', findAll);
+categoryRoute.post('/', upload.single('image'), create);
+categoryRoute.get('/:id', findOne);
+categoryRoute.patch('/:id', upload.single('image'), update);
+categoryRoute.delete('/:id', remove);
+categoryRoute.get('/Pagination', categoryWithPagination);
+categoryRoute.get('/Name_ru', getBycategoryName_ru);
+categoryRoute.get('/Name_uz', getBycategoryName_uz);
 
 /**
  * @swagger

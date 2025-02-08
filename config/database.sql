@@ -13,8 +13,8 @@ CREATE TABLE users (
 CREATE TABLE orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
-    FOREIGN KEY (user_id) REFERENCES users (id)
-
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    totalPrice FLOAT
 )
 
 CREATE TABLE orderItem (
@@ -23,8 +23,8 @@ CREATE TABLE orderItem (
     FOREIGN KEY (product_id) REFERENCES product (id),
     order_id INT,
     FOREIGN KEY (order_id) REFERENCES orders (id),
-    count INT NOT NULL,
-    total INT NOT NULL
+    quantity INT,
+    totalSumma FLOAT
 )
 
 CREATE TABLE category (

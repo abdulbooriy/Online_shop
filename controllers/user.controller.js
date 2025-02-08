@@ -77,12 +77,8 @@ async function verifyLoginOtp(req, res) {
     }
 }
 
-
-
 async function findAll(req, res) {
-    try {
-
-        
+    try {        
         let { fullname, page = 1, limit = 10 } = req.query;
         page = parseInt(page);
         limit = parseInt(limit);

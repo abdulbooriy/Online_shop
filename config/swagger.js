@@ -9,7 +9,7 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: "http://localhost:4000/api",
+            url: "http://localhost:3000/api",
             description: "Local server",
         },
     ],
@@ -23,5 +23,5 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 export default function swaggerDocs(app) {
-    app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }

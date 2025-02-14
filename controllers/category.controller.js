@@ -31,6 +31,7 @@ async function create(req, res) {
             return;
         }
         let [categories] = await database.query('insert into category (name_ru, name_uz, image) values (?, ?, ?)', [name_ru, name_uz, filename]);
+        
         let [result] = await database.query('select * from category where id = ?', [categories.insertId]);
         res.status(200).send({message: 'Category created', data: result});
     } catch (error) {

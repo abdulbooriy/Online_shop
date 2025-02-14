@@ -23,7 +23,7 @@ let productRoute = Router();
  *       200:
  *         description: All products
  */
-productRoute.get('/products', findAll);
+productRoute.get('/', findAll);
 
 /**
  * @swagger
@@ -68,7 +68,7 @@ productRoute.get('/products', findAll);
  *       400:
  *         description: Not found
  */
-productRoute.post('/product', upload.single('image'), create);
+productRoute.post('/', upload.single('image'), create);
 
 /**
  * @swagger
@@ -87,7 +87,7 @@ productRoute.post('/product', upload.single('image'), create);
  *       404:
  *         description: Not found product id
  */
-productRoute.get("/product/:id", findOne);
+productRoute.get("/:id", findOne);
 
 /**
  * @swagger
@@ -137,7 +137,7 @@ productRoute.get("/product/:id", findOne);
  *       404:
  *         description: Not found product ID
  */
-productRoute.patch("/product/:id", upload.single('image'), update);
+productRoute.patch("/:id", upload.single('image'), update);
 
 /**
  * @swagger
@@ -156,18 +156,18 @@ productRoute.patch("/product/:id", upload.single('image'), update);
  *       404:
  *         description: Not found product ID
  */
-productRoute.delete("/product/:id", remove);
+productRoute.delete("/:id", remove);
 
-productRoute.get("/productByNameRus", searchByNameRus);
+productRoute.get("/ByNameRus", searchByNameRus);
 
-productRoute.get("/productByNameUzb", searchByNameUzb);
+productRoute.get("/ByNameUzb", searchByNameUzb);
 
-productRoute.get("/productByCountryUzb", searchByCountryUzb);
+productRoute.get("/ByCountryUzb", searchByCountryUzb);
 
-productRoute.get("/productByCountryRus", searchByCountryRus);
+productRoute.get("/ByCountryRus", searchByCountryRus);
 
-productRoute.get("/productByBrandRus", searchByBrandRus);
+productRoute.get("/ByBrandRus", searchByBrandRus);
 
-productRoute.get("/productByBrandUzb", searchByBrandUzb);
+productRoute.get("/ByBrandUzb", searchByBrandUzb);
 
 export default productRoute;

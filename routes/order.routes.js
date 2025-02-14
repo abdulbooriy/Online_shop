@@ -1,33 +1,56 @@
-import { Router } from "express";
-import { create, findAll, findOne, remove, update } from "../controllers/order.controller.js";
+import  { Router } from 'express';
+import { findAll, findOne, create, update, remove } from '../controllers/order.controller.js';
 
-
-const orderRouter = Router();
+const orderRoute = Router();
 
 /**
  * @swagger
  * tags:
- *   - name: Orders
- *     description: Buyurtmalarni boshqarish API
- */
-
-/**
- * @swagger
- * /order:
+ *   name: Orders
+ *   description: Order management API
+ *
+ * /orders:
  *   get:
- *     summary: Barcha buyurtmalarni olish
+ *     summary: Get all orders
  *     tags: [Orders]
+ *     description: Retrieve a list of all orders
  *     responses:
  *       200:
- *         description: Buyurtmalar ro'yxati
+ *         description: A list of orders
+ *       403:
+ *         description: Orders table is empty
+ *       500:
+ *         description: Server error
  */
-orderRouter.get("/order", findAll);
+orderRoute.get('/', findAll);
 
 /**
  * @swagger
- * /order:
+ * /orders/{id}:
+ *   get:
+ *     summary: Get a single order by ID
+ *     tags: [Orders]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Order found
+ *       403:
+ *         description: Order not found
+ *       500:
+ *         description: Server error
+ */
+orderRoute.get('/:id', findOne);
+
+/**
+ * @swagger
+ * /orders:
  *   post:
- *     summary: Yangi buyurtma yaratish
+ *     summary: Create a new order
  *     tags: [Orders]
  *     requestBody:
  *       required: true
@@ -36,46 +59,43 @@ orderRouter.get("/order", findAll);
  *           schema:
  *             type: object
  *             properties:
- *               product:
- *                 type: string
- *               quantity:
+ *               user_id:
  *                 type: integer
- *     responses:
- *       201:
- *         description: Buyurtma yaratildi
- */
-orderRouter.post("/order", create);
-
-/**
- * @swagger
- * /order/{id}:
- *   get:
- *     summary: ID bo'yicha buyurtma olish
- *     tags: [Orders]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: Buyurtma ID
+ *               totalPrice:
+ *                 type: number
+ *               products:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     product_id:
+ *                       type: integer
+ *                     quantity:
+ *                       type: integer
+ *                     totalSumma:
+ *                       type: number
  *     responses:
  *       200:
- *         description: Buyurtma ma'lumotlari
- *       404:
- *         description: Buyurtma topilmadi
+ *         description: Order created successfully
+ *       403:
+ *         description: Validation error or user not found
+ *       500:
+ *         description: Server error
  */
-orderRouter.get("/order/:id", findOne);
+orderRoute.post('/', create);
 
 /**
  * @swagger
- * /order/{id}:
- *   patch:
- *     summary: Buyurtma ma'lumotlarini yangilash
+ * /orders/{id}:
+ *   put:
+ *     summary: Update an existing order
  *     tags: [Orders]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: Buyurtma ID
+ *         schema:
+ *           type: integer
  *     requestBody:
  *       required: true
  *       content:
@@ -83,35 +103,38 @@ orderRouter.get("/order/:id", findOne);
  *           schema:
  *             type: object
  *             properties:
- *               product:
- *                 type: string
- *               quantity:
+ *               user_id:
  *                 type: integer
  *     responses:
  *       200:
- *         description: Buyurtma yangilandi
- *       404:
- *         description: Buyurtma topilmadi
+ *         description: Order updated successfully
+ *       403:
+ *         description: Validation error or user not found
+ *       500:
+ *         description: Server error
  */
-orderRouter.patch("/order/:id", update);
+orderRoute.patch('/:id', update);
 
 /**
  * @swagger
- * /order/{id}:
+ * /orders/{id}:
  *   delete:
- *     summary: Buyurtmani o'chirish
+ *     summary: Delete an order by ID
  *     tags: [Orders]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: Buyurtma ID
+ *         schema:
+ *           type: integer
  *     responses:
  *       200:
- *         description: Buyurtma o'chirildi
- *       404:
- *         description: Buyurtma topilmadi
+ *         description: Order deleted successfully
+ *       403:
+ *         description: Order not found
+ *       500:
+ *         description: Server error
  */
-orderRouter.delete("/order/:id", remove);
+orderRoute.delete('/:id', remove);
 
-export default orderRouter;
+export default orderRoute;

@@ -1,21 +1,70 @@
-import { Router } from "express";
-import {findAll,findOne,register,remove,sendOtpLogin,update, verifyLoginOtp} from "../controllers/user.controller.js";
+import { Router } from 'express';
+import { register, sendOtpLogin, verifyLoginOtp, findAll, findOne, update, remove } from '../controllers/user.controller.js';
 
-let userRoute = Router();
+const userRoute = Router();
+
 /**
  * @swagger
  * tags:
  *   name: Users
- *   description: Foydalanuvchilarni boshqarish API
+ *   description: User management API
  */
 
 /**
  * @swagger
- * /register:
- *   post:
- *     summary: "Foydalanuvchini ro‘yxatdan o‘tkazish"
+ * /users:
+ *   get:
+ *     summary: Get all users
  *     tags: [Users]
- *     description: "Foydalanuvchi fullname, phone, password va role orqali ro‘yxatdan o‘tadi"
+ *     parameters:
+ *       - in: query
+ *         name: fullname
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *       500:
+ *         description: Server error
+ */
+userRoute.get('/', findAll);
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Get a single user by ID
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: User found
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Server error
+ */
+userRoute.get('/:id', findOne);
+
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Users]
  *     requestBody:
  *       required: true
  *       content:
@@ -27,27 +76,26 @@ let userRoute = Router();
  *                 type: string
  *               phone:
  *                 type: string
- *               password:
- *                 type: string
  *               role:
+ *                 type: string
+ *               password:
  *                 type: string
  *     responses:
  *       201:
- *         description: "Foydalanuvchi muvaffaqiyatli ro‘yxatdan o‘tdi"
- *       400:
- *         description: "Telefon raqam yoki parol noto‘g‘ri"
+ *         description: User registered successfully
  *       409:
- *         description: "Foydalanuvchi allaqachon ro‘yxatdan o‘tgan"
+ *         description: User already exists
+ *       500:
+ *         description: Server error
  */
-userRoute.post("/register", register);
+userRoute.post('/', register);
 
 /**
  * @swagger
- * /send-otp:
+ * /users/send-otp:
  *   post:
- *     summary: "Foydalanuvchiga OTP jo‘natish"
+ *     summary: Send OTP for login
  *     tags: [Users]
- *     description: "Telefon raqam orqali OTP kod jo‘natish"
  *     requestBody:
  *       required: true
  *       content:
@@ -59,21 +107,20 @@ userRoute.post("/register", register);
  *                 type: string
  *     responses:
  *       200:
- *         description: "OTP yuborildi"
- *       400:
- *         description: "Telefon raqam noto‘g‘ri"
+ *         description: OTP sent
  *       401:
- *         description: "Foydalanuvchi topilmadi"
+ *         description: User not found
+ *       500:
+ *         description: Server error
  */
-userRoute.post("/send-otp", sendOtpLogin);
+userRoute.post('/send-otp', sendOtpLogin);
 
 /**
  * @swagger
- * /verify-otp:
+ * /users/verify-otp:
  *   post:
- *     summary: "OTP kodini tekshirish"
+ *     summary: Verify OTP for login
  *     tags: [Users]
- *     description: "Telefon raqam va OTP kod orqali foydalanuvchini tasdiqlash"
  *     requestBody:
  *       required: true
  *       content:
@@ -89,127 +136,62 @@ userRoute.post("/send-otp", sendOtpLogin);
  *                 type: string
  *     responses:
  *       200:
- *         description: "OTP tasdiqlandi"
+ *         description: Login successful
  *       400:
- *         description: "Noto‘g‘ri OTP yoki parol"
- *       401:
- *         description: "Foydalanuvchi topilmadi"
+ *         description: Invalid OTP or password
+ *       500:
+ *         description: Server error
  */
-userRoute.post("/verify-otp", verifyLoginOtp);
-
-/**
- * @swagger
- * /users:
- *   get:
- *     summary: "Barcha foydalanuvchilarni olish"
- *     tags: [Users]
- *     description: "Foydalanuvchilar ro‘yxatini qaytaradi"
- *     parameters:
- *       - in: query
- *         name: fullname
- *         required: false
- *         schema:
- *           type: string
- *         description: "Foydalanuvchi ismiga asoslangan qidiruv"
- *       - in: query
- *         name: page
- *         required: false
- *         schema:
- *           type: integer
- *           default: 1
- *         description: "Sahifa raqami"
- *       - in: query
- *         name: limit
- *         required: false
- *         schema:
- *           type: integer
- *           default: 10
- *         description: "Foydalanuvchilar soni"
- *     responses:
- *       200:
- *         description: "Foydalanuvchilar ro‘yxati"
- *       404:
- *         description: "Foydalanuvchilar topilmadi"
- */
-userRoute.get("/users", findAll);
+userRoute.post('/verify-otp', verifyLoginOtp);
 
 /**
  * @swagger
  * /users/{id}:
- *   get:
- *     summary: "Bitta foydalanuvchini olish"
+ *   put:
+ *     summary: Update user information
  *     tags: [Users]
- *     description: "ID bo‘yicha foydalanuvchini olish"
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: integer
- *         description: "Foydalanuvchi ID raqami"
- *     responses:
- *       200:
- *         description: "Foydalanuvchi ma’lumotlari"
- *       404:
- *         description: "Foydalanuvchi topilmadi"
- */
-userRoute.get("/users/:id", findOne);
-
-/**
- * @swagger
- * /users/{id}:
- *   patch:
- *     summary: "Foydalanuvchi ma’lumotlarini yangilash"
- *     tags: [Users]
- *     description: "ID bo‘yicha foydalanuvchi ma’lumotlarini yangilash"
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: "Foydalanuvchi ID raqami"
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             properties:
- *               fullname:
- *                 type: string
- *               phone:
- *                 type: string
  *     responses:
  *       200:
- *         description: "Foydalanuvchi ma’lumotlari yangilandi"
- *       400:
- *         description: "Foydalanuvchi ID noto‘g‘ri"
+ *         description: User updated successfully
  *       404:
- *         description: "Foydalanuvchi topilmadi"
+ *         description: User not found
+ *       500:
+ *         description: Server error
  */
-userRoute.patch("/users/:id", update);
+userRoute.patch('/:id', update);
 
 /**
  * @swagger
  * /users/{id}:
  *   delete:
- *     summary: "Foydalanuvchini o‘chirish"
+ *     summary: Delete a user
  *     tags: [Users]
- *     description: "ID bo‘yicha foydalanuvchini o‘chirish"
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: integer
- *         description: "Foydalanuvchi ID raqami"
  *     responses:
  *       200:
- *         description: "Foydalanuvchi o‘chirildi"
+ *         description: User deleted
  *       404:
- *         description: "Foydalanuvchi topilmadi"
+ *         description: User not found
+ *       500:
+ *         description: Server error
  */
-userRoute.delete("/users/:id", remove);
+userRoute.delete('/:id', remove);
 
 export default userRoute;

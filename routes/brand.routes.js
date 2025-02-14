@@ -23,7 +23,7 @@ const brandRoute = Router();
  *       500: 
  *         description: "Some server error"
  */
-brandRoute.get('/brands', findAll);
+brandRoute.get('/', findAll);
 
 /**
  * @swagger
@@ -53,7 +53,7 @@ brandRoute.get('/brands', findAll);
  *       400:
  *         description: "Not found brands"
  */
-brandRoute.post('/brands', upload.single('image'), create);
+brandRoute.post('/', upload.single('image'), create);
 
 /**
  * @swagger
@@ -76,7 +76,7 @@ brandRoute.post('/brands', upload.single('image'), create);
  *       404:
  *         description: "Brand id not found"
  */
-brandRoute.get('/brand/:id', findOne);
+brandRoute.get('/:id', findOne);
 
 /**
  * @swagger
@@ -111,7 +111,7 @@ brandRoute.get('/brand/:id', findOne);
  *       404:
  *         description: "Not found brand id"
  */
-brandRoute.patch('/brand/:id', upload.single('image'), update);
+brandRoute.patch('/:id', upload.single('image'), update);
 
 /**
  * @swagger
@@ -135,7 +135,7 @@ brandRoute.patch('/brand/:id', upload.single('image'), update);
  *       404:
  *         description: "Not found brand"
  */
-brandRoute.delete('/brand/:id', remove);
-brandRoute.get('/brandsWithName_uz', getByBrandName);
+brandRoute.delete('/:id', remove);
+brandRoute.get('/WithName_uz', getByBrandName);
 
 export default brandRoute;

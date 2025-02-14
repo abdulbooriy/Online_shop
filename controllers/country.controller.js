@@ -92,7 +92,7 @@ async function getByCountryName_ru(req, res) {
 async function countriesWithLimit (req, res) {
     try {
         let { limit } = req.query;
-        let [countries] = await database.query(`select * from country limit ${limit}`);
+        let [countries] = await database.query(`SELCT * FROM country LIMIT ${limit}`);
         res.status(200).send({data: countries});
     } catch (error) {
         res.status(500).send({error_message: error.message});

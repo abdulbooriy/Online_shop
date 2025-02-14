@@ -15,6 +15,7 @@ async function findAll(req, res) {
 
 async function create(req, res) {
     try {
+        
         const { filename } = req.file;
         const { name_ru, name_uz} = req.body;
         const { error, _ } = categoryValidation({name_ru, name_uz, image: filename});

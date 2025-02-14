@@ -1,4 +1,7 @@
 import axios from "axios";
+import { totp } from "otplib";
+
+totp.options = {step:200, digits:4}
 
 const api = axios.create({
     baseURL: "https://notify.eskiz.uz/api",
@@ -32,7 +35,7 @@ async function sendOTP(phone, otp) {
         }
 
         const smsResponse = await api.post(
-            "/message/sms/send",
+            // "/message/sms/send",
             {
                 mobile_phone: phone,
                 message: ` Bu Eskiz dan test`,
@@ -44,7 +47,7 @@ async function sendOTP(phone, otp) {
             }
         );
 
-        console.log(`Eskiz OTP jo'natildi: ${smsResponse.data.message}`);
+        // console.log(`Eskiz OTP jo'natildi: ${smsResponse.data.message}`);
     } catch (error) {
         console.error("Eskiz SMS yuborishda xatolik:", error.response?.data || error.message);
     }
